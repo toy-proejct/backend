@@ -28,7 +28,7 @@ jobs:
         distribution: 'adopt'
         cache: gradle      
     - name: Grant execute permission for gradlew
-      run: chmod +x BarkingCat/gradlew
+      run: chmod +x ./backend/gradlew
     - name: Build with Gradle
       run: |
         cd ./backend
