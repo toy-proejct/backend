@@ -17,6 +17,6 @@ public class TestController {
 
     @GetMapping("/heartbeat")
     public List<TestEntity> heartbeat() {
-        return entityManager.createQuery("select 1 from TestEntity t", TestEntity.class).getResultList();
+        return entityManager.createQuery("select t from TestEntity t", TestEntity.class).getResultList();
     }
 }
