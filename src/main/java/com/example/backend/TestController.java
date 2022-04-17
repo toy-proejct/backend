@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 @RestController
 public class TestController {
@@ -15,8 +16,7 @@ public class TestController {
     }
 
     @GetMapping("/heartbeat")
-    public String heartbeat() {
-        entityManager.createQuery("select 1 from TestEntity t");
-        return "OK";
+    public List<TestEntity> heartbeat() {
+        return entityManager.createQuery("select 1 from TestEntity t", TestEntity.class).getResultList();
     }
 }
