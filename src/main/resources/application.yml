@@ -1,0 +1,16 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 1000
+
+logging:
+  level:
+    #    org.hibernate.SQL: debug
+    #    org.hivernate.type: trace
+    org.springframework.orm.jpa: DEBUG
+
+server:
+  servlet:
+    context-path: /api
