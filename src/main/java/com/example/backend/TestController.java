@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.persistence.EntityManager;
-import java.util.List;
+import java.math.BigInteger;
 
 @RestController
 public class TestController {
@@ -16,7 +16,7 @@ public class TestController {
     }
 
     @GetMapping("/heartbeat")
-    public List<TestEntity> heartbeat() {
-        return entityManager.createQuery("select t from TestEntity t", TestEntity.class).getResultList();
+    public BigInteger heartbeat() {
+        return (BigInteger) entityManager.createNativeQuery("select count(*) from test_entity").getSingleResult();
     }
 }
