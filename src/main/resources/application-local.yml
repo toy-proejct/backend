@@ -5,9 +5,9 @@ spring:
         format_sql: true
         default_batch_fetch_size: 1000
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/toy-project?useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://localhost:3306/test-schema?useUnicode=true&characterEncoding=utf-8
     username: root
     password: 1234
