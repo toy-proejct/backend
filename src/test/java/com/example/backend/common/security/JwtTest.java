@@ -26,9 +26,7 @@ public class JwtTest {
     @DisplayName("토큰 유효시간이 지나면 토큰 유효성 검증에 실패한다")
     public void expirationTest() {
         //given
-        JwtService jwtService = JwtService.builder()
-                .expirationInMilliseconds(-10L)
-                .build();
+        JwtService jwtService = new JwtService(-10L);
         String token = jwtService.createToken(EMAIL);
 
         //when

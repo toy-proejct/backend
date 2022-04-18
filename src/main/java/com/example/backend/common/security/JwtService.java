@@ -12,19 +12,17 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Component
-@Builder
 public class JwtService {
     private static final String CLAIM_EMAIL = "email";
     private static final SecretKey signingKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private static final Long TWELVE_HOURS_IN_MILLISECONDS = 1000 * 60 * 60 * 12L;
 
-    private Long TWELVE_HOURS_IN_MILLISECONDS = 1000 * 60 * 60 * 12L;
     private Long expirationInMilliseconds = TWELVE_HOURS_IN_MILLISECONDS;
 
     public JwtService() {
     }
 
-    public JwtService(Long TWELVE_HOURS_IN_MILLISECONDS, Long expirationInMilliseconds) {
-        this.TWELVE_HOURS_IN_MILLISECONDS = TWELVE_HOURS_IN_MILLISECONDS;
+    public JwtService(Long expirationInMilliseconds) {
         this.expirationInMilliseconds = expirationInMilliseconds;
     }
 
