@@ -37,6 +37,8 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
         //when
         ExtractableResponse<Response> updateResponse = 회원_정보수정을_요청("new nickname", loginResponse.body().asString());
+        //then
+        회원정보_변경_확인됨(updateResponse);
 
     }
 
@@ -93,5 +95,9 @@ public class MemberAcceptanceTest extends AcceptanceTest {
                 .then()
                 .log().all()
                 .extract();
+    }
+
+    private void 회원정보_변경_확인됨(ExtractableResponse<Response> updateResponse) {
+        assertThat(updateResponse.statusCode()).isEqualTo(HttpStatus.ACCEPTED.value());
     }
 }
