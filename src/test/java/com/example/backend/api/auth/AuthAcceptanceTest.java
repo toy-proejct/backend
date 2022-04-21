@@ -2,6 +2,7 @@ package com.example.backend.api.auth;
 
 import com.example.backend.AcceptanceTest;
 import com.example.backend.api.member.dto.MemberResponse;
+import com.example.backend.api.session.dto.TokenResponse;
 import com.example.backend.common.security.BearerHeader;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -29,10 +30,10 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     public void getMemberInfo() {
         //given
         회원_등록되어_있음(EMAIL, NICKNAME, PHONE, PASSWORD);
-        ExtractableResponse<Response> token = 로그인되어_있음(EMAIL, PASSWORD);
+        TokenResponse token = 로그인되어_있음(EMAIL, PASSWORD);
 
         //when
-        ExtractableResponse<Response> response = 회원정보를_요청(token.body().asString());
+        ExtractableResponse<Response> response = 회원정보를_요청(token.getToken());
 
         //then
         회원정보_조회됨(response, EMAIL, NICKNAME, PHONE);
@@ -41,6 +42,9 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("토큰이 없으면 회원 정보조회에 실패한다")
     public void myInfoFailWithoutBearerToken() {
+        //given
+        회원_등록되어_있음(EMAIL, NICKNAME, PHONE, PASSWORD);
+
         //then
         RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -72,12 +76,13 @@ public class AuthAcceptanceTest extends AcceptanceTest {
                 .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 
-    public ExtractableResponse<Response> 회원_등록되어_있음(String email, String nickname, String phone, String password) {
-        return 회원_생성을_요청(email, nickname, phone, password);
+    public void 회원_등록되어_있음(String email, String nickname, String phone, String password) {
+        회원_생성을_요청(email, nickname, phone, password);
     }
 
-    public ExtractableResponse<Response> 로그인되어_있음(String email, String password) {
-        return 회원_로그인을_요청(email, password);
+    public TokenResponse 로그인되어_있음(String email, String password) {
+        ExtractableResponse<Response> response = 회원_로그인을_요청(email, password);
+        return response.as(TokenResponse.class);
     }
 
     public static ExtractableResponse<Response> 회원정보를_요청(String token) {

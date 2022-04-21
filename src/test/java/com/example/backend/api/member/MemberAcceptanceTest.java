@@ -1,6 +1,7 @@
 package com.example.backend.api.member;
 
 import com.example.backend.AcceptanceTest;
+import com.example.backend.api.session.dto.TokenResponse;
 import com.example.backend.common.security.BearerHeader;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -36,7 +37,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         로그인_성공함(loginResponse);
 
         //when
-        ExtractableResponse<Response> updateResponse = 회원_정보수정을_요청("new nickname", loginResponse.body().asString());
+        ExtractableResponse<Response> updateResponse = 회원_정보수정을_요청("new nickname", loginResponse.as(TokenResponse.class));
         //then
         회원정보_변경_확인됨(updateResponse);
 
@@ -82,13 +83,13 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         assertThat(loginResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
-    public static ExtractableResponse<Response> 회원_정보수정을_요청(String nickname, String token) {
+    public static ExtractableResponse<Response> 회원_정보수정을_요청(String nickname, TokenResponse token) {
         Map<String, String> params = new HashMap<>();
         params.put("nickname", nickname);
 
         return RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .header(AUTHORIZATION, BearerHeader.of(token))
+                .header(AUTHORIZATION, BearerHeader.of(token.getToken()))
                 .body(params)
                 .when()
                 .put("/api/member")

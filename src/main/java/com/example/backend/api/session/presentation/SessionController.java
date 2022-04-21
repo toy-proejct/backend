@@ -2,6 +2,7 @@ package com.example.backend.api.session.presentation;
 
 import com.example.backend.api.session.application.SessionService;
 import com.example.backend.api.session.dto.LoginRequest;
+import com.example.backend.api.session.dto.TokenResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,7 @@ public class SessionController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        String token = sessionService.login(loginRequest);
+        TokenResponse token = sessionService.login(loginRequest);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(token);
     }
