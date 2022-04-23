@@ -40,7 +40,7 @@ public class JwtService {
 
     public String getClaimEmail(String token) {
         if (!isValidToken(token)) {
-            throw new RuntimeException("로그인 정보가 정확하지 않습니다");
+            return "";
         }
 
         return getClaimsJws(token).getBody()

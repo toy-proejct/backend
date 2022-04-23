@@ -44,7 +44,6 @@ public class JwtSessionArgumentResolver implements HandlerMethodArgumentResolver
 
     private String extractBearerToken(NativeWebRequest request) throws IllegalAccessException {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-        System.out.println(header);
 
         if (header == null) {
             return null;
