@@ -3,9 +3,13 @@ package com.example.backend.api.member.dto;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Data
 public class UpdateMemberRequest {
-    @NotEmpty
+    @NotEmpty(message = "닉네임은 필수 입력값입니다.")
     private String nickname;
+
+    @NotNull
+    private String introduce;
 }
