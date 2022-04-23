@@ -56,7 +56,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
                 .get("/api/member")
                 .then()
                 .log().all()
-                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+                .statusCode(HttpStatus.UNAUTHORIZED.value());
     }
 
     @Test
