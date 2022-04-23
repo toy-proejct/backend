@@ -1,7 +1,9 @@
 package com.example.backend.api.member;
 
 import com.example.backend.AcceptanceTest;
-import com.example.backend.api.session.dto.TokenResponse;
+import com.example.backend.api.member.dto.Provider;
+import com.example.backend.api.member.dto.ProviderType;
+import com.example.backend.api.member.dto.TokenResponse;
 import com.example.backend.common.security.BearerHeader;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -23,6 +25,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     private static final String PASSWORD = "1q2w3e4r";
     private static final String INTRODUCE = "test introduce";
     private static final String AUTHORIZATION = "authorization";
+    private static final Provider PROVIDER = new Provider(ProviderType.NORMAL, "");
 
     @Test
     @DisplayName("회원 정보를 관리한다.")
@@ -33,7 +36,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         회원_생성됨(createResponse);
 
         //when
-        ExtractableResponse<Response> loginResponse = 회원_로그인을_요청(EMAIL, PASSWORD);
+        ExtractableResponse<Response> loginResponse = 회원_로그인을_요청(EMAIL, PASSWORD, PROVIDER);
         //then
         로그인_성공함(loginResponse);
 
@@ -56,7 +59,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(params)
                 .when()
-                .post("/api/member")
+                .post("/api/member/register")
                 .then()
                 .log().all()
                 .extract();
@@ -66,16 +69,20 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
     }
 
-    public static ExtractableResponse<Response> 회원_로그인을_요청(String email, String password) {
-        Map<String, String> params = new HashMap<>();
+    public static ExtractableResponse<Response> 회원_로그인을_요청(String email, String password, Provider provider) {
+        Map<String, Object> params = new HashMap<>();
         params.put("email", email);
         params.put("password", password);
+        params.put("provider", Map.of(
+                "providerType", provider.getProviderType(),
+                "token", provider.getToken()
+        ));
 
         return RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(params)
                 .when()
-                .post("/api/session/login")
+                .post("/api/member/login")
                 .then()
                 .log().all()
                 .extract();
