@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/member")
 public class MemberController {
@@ -29,7 +31,7 @@ public class MemberController {
     }
 
     @PostMapping
-    public ResponseEntity<?> registerMember(@RequestBody RegisterMemberRequest registerMemberRequest) {
+    public ResponseEntity<?> registerMember(@Valid @RequestBody RegisterMemberRequest registerMemberRequest) {
         memberService.registerMember(registerMemberRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .build();
@@ -37,7 +39,7 @@ public class MemberController {
 
     @Authenticated
     @PutMapping
-    public ResponseEntity<?> updateMember(@MemberClaim Member member, @RequestBody UpdateMemberRequest updateMemberRequest) {
+    public ResponseEntity<?> updateMember(@MemberClaim Member member, @Valid @RequestBody UpdateMemberRequest updateMemberRequest) {
         memberService.updateMember(member, updateMemberRequest);
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .build();
