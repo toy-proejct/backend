@@ -38,7 +38,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         로그인_성공함(loginResponse);
 
         //when
-        ExtractableResponse<Response> updateResponse = 회원_정보수정을_요청("new nickname", loginResponse.as(TokenResponse.class));
+        ExtractableResponse<Response> updateResponse = 회원_정보수정을_요청("new nickname", "new introduce", loginResponse.as(TokenResponse.class));
         //then
         회원정보_변경_확인됨(updateResponse);
 
@@ -85,9 +85,10 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         assertThat(loginResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
-    public static ExtractableResponse<Response> 회원_정보수정을_요청(String nickname, TokenResponse token) {
+    public static ExtractableResponse<Response> 회원_정보수정을_요청(String nickname, String introduce, TokenResponse token) {
         Map<String, String> params = new HashMap<>();
         params.put("nickname", nickname);
+        params.put("introduce", introduce);
 
         return RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
