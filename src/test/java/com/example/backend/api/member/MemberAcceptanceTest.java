@@ -21,13 +21,14 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     private static final String NICKNAME = "test";
     private static final String PHONE = "010-0000-0000";
     private static final String PASSWORD = "1q2w3e4r";
+    private static final String INTRODUCE = "test introduce";
     private static final String AUTHORIZATION = "authorization";
 
     @Test
     @DisplayName("회원 정보를 관리한다.")
     void manageMember() {
         // when
-        ExtractableResponse<Response> createResponse = 회원_생성을_요청(EMAIL, NICKNAME, PHONE, PASSWORD);
+        ExtractableResponse<Response> createResponse = 회원_생성을_요청(EMAIL, NICKNAME, PHONE, PASSWORD, INTRODUCE);
         // then
         회원_생성됨(createResponse);
 
@@ -43,12 +44,13 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
     }
 
-    public static ExtractableResponse<Response> 회원_생성을_요청(String email, String nickname, String phone, String password) {
+    public static ExtractableResponse<Response> 회원_생성을_요청(String email, String nickname, String phone, String password, String introduce) {
         Map<String, String> params = new HashMap<>();
         params.put("email", email);
         params.put("nickname", nickname);
         params.put("phone", phone);
         params.put("password", password);
+        params.put("introduce", introduce);
 
         return RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

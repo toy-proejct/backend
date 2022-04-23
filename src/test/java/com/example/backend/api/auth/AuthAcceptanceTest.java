@@ -23,13 +23,14 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     private static final String NICKNAME = "test";
     private static final String PHONE = "010-0000-0000";
     private static final String PASSWORD = "1q2w3e4r";
+    private static final String INTRODUCE = "test introduce";
     private static final String AUTHORIZATION = "authorization";
 
     @Test
     @DisplayName("회원 정보 조회에 성공한다")
     public void getMemberInfo() {
         //given
-        회원_등록되어_있음(EMAIL, NICKNAME, PHONE, PASSWORD);
+        회원_등록되어_있음(EMAIL, NICKNAME, PHONE, PASSWORD, INTRODUCE);
         TokenResponse token = 로그인되어_있음(EMAIL, PASSWORD);
 
         //when
@@ -43,7 +44,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     @DisplayName("토큰이 없으면 회원 정보조회에 실패한다")
     public void myInfoFailWithoutBearerToken() {
         //given
-        회원_등록되어_있음(EMAIL, NICKNAME, PHONE, PASSWORD);
+        회원_등록되어_있음(EMAIL, NICKNAME, PHONE, PASSWORD, INTRODUCE);
 
         //then
         RestAssured.given().log().all()
@@ -59,7 +60,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     @DisplayName("잘못된 정보를 입력하면 로그인에 실패한다")
     public void loginFail() {
         //given
-        회원_등록되어_있음(EMAIL, NICKNAME, PHONE, PASSWORD);
+        회원_등록되어_있음(EMAIL, NICKNAME, PHONE, PASSWORD, INTRODUCE);
 
         Map<String, String> params = new HashMap<>();
         params.put("email", EMAIL + ".com");
@@ -76,8 +77,8 @@ public class AuthAcceptanceTest extends AcceptanceTest {
                 .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 
-    public void 회원_등록되어_있음(String email, String nickname, String phone, String password) {
-        회원_생성을_요청(email, nickname, phone, password);
+    public void 회원_등록되어_있음(String email, String nickname, String phone, String password, String introduce) {
+        회원_생성을_요청(email, nickname, phone, password, introduce);
     }
 
     public TokenResponse 로그인되어_있음(String email, String password) {

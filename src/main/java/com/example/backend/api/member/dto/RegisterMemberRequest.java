@@ -9,8 +9,9 @@ public class RegisterMemberRequest {
     private String nickname;
     private String phone;
     private String password;
+    private String introduce;
 
     public Member toEntity() {
-        return new Member(email, nickname, phone, password);
+        return new Member(email, nickname, phone, password, introduce);
     }
 }
