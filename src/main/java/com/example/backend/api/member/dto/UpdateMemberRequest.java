@@ -1,11 +1,11 @@
 package com.example.backend.api.member.dto;
 
-import lombok.Data;
+import lombok.Getter;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-@Data
+@Getter
 public class UpdateMemberRequest {
     @NotEmpty(message = "닉네임은 필수 입력값입니다.")
     private String nickname;

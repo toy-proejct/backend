@@ -9,6 +9,7 @@ import com.example.backend.common.security.annotations.MemberClaim;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 
@@ -35,7 +36,7 @@ public class MemberController {
     }
 
     @GetMapping
-    public ResponseEntity<?> findMemberInfo(@MemberClaim Member member) {
+    public ResponseEntity<?> findMemberInfo(@ApiIgnore @MemberClaim Member member) {
         if (member.equals(Member.DummyMember())) {
             throw new AuthorizationException(AuthorizationException.Code.WRONG_MEMBER_INFO);
         }
@@ -44,7 +45,7 @@ public class MemberController {
 
     @Authenticated
     @PutMapping
-    public ResponseEntity<?> updateMember(@MemberClaim Member member, @Valid @RequestBody UpdateMemberRequest updateMemberRequest) {
+    public ResponseEntity<?> updateMember(@ApiIgnore @MemberClaim Member member, @Valid @RequestBody UpdateMemberRequest updateMemberRequest) {
         memberService.updateMember(member, updateMemberRequest);
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .build();

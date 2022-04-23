@@ -1,14 +1,15 @@
 package com.example.backend.api.member.dto;
 
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Provider {
     private ProviderType providerType;
-    private String token;
 
-    public Provider(ProviderType providerType, String token) {
-        this.providerType = providerType;
-        this.token = token;
-    }
+    private String token;
 }
