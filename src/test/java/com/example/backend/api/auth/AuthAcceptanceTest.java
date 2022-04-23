@@ -2,7 +2,9 @@ package com.example.backend.api.auth;
 
 import com.example.backend.AcceptanceTest;
 import com.example.backend.api.member.dto.MemberResponse;
-import com.example.backend.api.session.dto.TokenResponse;
+import com.example.backend.api.member.dto.Provider;
+import com.example.backend.api.member.dto.ProviderType;
+import com.example.backend.api.member.dto.TokenResponse;
 import com.example.backend.common.security.BearerHeader;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -25,13 +27,14 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     private static final String PASSWORD = "1q2w3e4r";
     private static final String INTRODUCE = "test introduce";
     private static final String AUTHORIZATION = "authorization";
+    private static final Provider PROVIDER = new Provider(ProviderType.NORMAL, "");
 
     @Test
     @DisplayName("회원 정보 조회에 성공한다")
     public void getMemberInfo() {
         //given
         회원_등록되어_있음(EMAIL, NICKNAME, PHONE, PASSWORD, INTRODUCE);
-        TokenResponse token = 로그인되어_있음(EMAIL, PASSWORD);
+        TokenResponse token = 로그인되어_있음(EMAIL, PASSWORD, PROVIDER);
 
         //when
         ExtractableResponse<Response> response = 회원정보를_요청(token.getToken());
@@ -71,7 +74,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(params)
                 .when()
-                .post("/api/session/login")
+                .post("/api/member/login")
                 .then()
                 .log().all()
                 .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -81,8 +84,8 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         회원_생성을_요청(email, nickname, phone, password, introduce);
     }
 
-    public TokenResponse 로그인되어_있음(String email, String password) {
-        ExtractableResponse<Response> response = 회원_로그인을_요청(email, password);
+    public TokenResponse 로그인되어_있음(String email, String password, Provider provider) {
+        ExtractableResponse<Response> response = 회원_로그인을_요청(email, password, provider);
         return response.as(TokenResponse.class);
     }
 

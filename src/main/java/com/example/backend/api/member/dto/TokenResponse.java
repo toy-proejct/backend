@@ -1,4 +1,4 @@
-package com.example.backend.api.session.dto;
+package com.example.backend.api.member.dto;
 
 import lombok.AccessLevel;
 import lombok.Getter;
