@@ -3,6 +3,7 @@ package com.example.backend.api.member.presentation;
 import com.example.backend.api.member.application.MemberService;
 import com.example.backend.api.member.domain.Member;
 import com.example.backend.api.member.dto.*;
+import com.example.backend.common.exception.AuthorizationException;
 import com.example.backend.common.security.annotations.Authenticated;
 import com.example.backend.common.security.annotations.MemberClaim;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,7 @@ public class MemberController {
     @GetMapping
     public ResponseEntity<?> findMemberInfo(@MemberClaim Member member) {
         if (member.equals(Member.DummyMember())) {
-            throw new RuntimeException("로그인 정보가 일치하지 않습니다");
+            throw new AuthorizationException(AuthorizationException.Code.WRONG_MEMBER_INFO);
         }
         return ResponseEntity.ok(new MemberResponse(member));
     }
