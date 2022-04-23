@@ -22,6 +22,9 @@ public class MemberController {
 
     @GetMapping
     public ResponseEntity<?> findMemberInfo(@MemberClaim Member member) {
+        if (member.equals(Member.DummyMember())) {
+            throw new RuntimeException("로그인 정보가 일치하지 않습니다");
+        }
         return ResponseEntity.ok(new MemberResponse(member));
     }
 
