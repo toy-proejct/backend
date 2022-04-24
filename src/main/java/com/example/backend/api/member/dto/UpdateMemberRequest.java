@@ -8,7 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Getter
-@ApiModel(value = "회원가입 정보를 입력하는 객체")
+@ApiModel(value = "회원수정 정보를 입력하는 객체")
 public class UpdateMemberRequest {
     @NotEmpty(message = "닉네임은 필수 입력값입니다.")
     @ApiModelProperty(value = "닉네임")
