@@ -56,7 +56,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
                 .get("/api/member")
                 .then()
                 .log().all()
-                .statusCode(HttpStatus.UNAUTHORIZED.value());
+                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 
     @Test
@@ -65,9 +65,13 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         //given
         회원_등록되어_있음(EMAIL, NICKNAME, PHONE, PASSWORD, INTRODUCE);
 
-        Map<String, String> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("email", EMAIL + ".com");
         params.put("password", PASSWORD);
+        params.put("provider", Map.of(
+                "providerType", PROVIDER.getProviderType(),
+                "token", PROVIDER.getToken()
+        ));
 
         //then
         RestAssured.given().log().all()
@@ -77,7 +81,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
                 .post("/api/member/login")
                 .then()
                 .log().all()
-                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
     public void 회원_등록되어_있음(String email, String nickname, String phone, String password, String introduce) {
