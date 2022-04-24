@@ -2,7 +2,7 @@ package com.example.backend.api.member.domain;
 
 import com.example.backend.api.infra.BaseEntity;
 import com.example.backend.api.member.dto.UpdateMemberRequest;
-import com.example.backend.common.exception.AuthorizationException;
+import com.example.backend.common.exception.UnidentifiedException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -53,7 +53,7 @@ public class Member extends BaseEntity {
 
     public void checkPassword(String password, PasswordEncoder passwordEncoder) {
         if (!passwordEncoder.matches(password, this.password)) {
-            throw new AuthorizationException(AuthorizationException.Code.WRONG_MEMBER_INFO);
+            throw new UnidentifiedException("비밀번호가 일치하지 않습니다");
         }
     }
 
