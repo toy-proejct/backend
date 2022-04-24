@@ -49,7 +49,7 @@ public class MemberController {
                 .build();
     }
 
-    @Operation(summary = "select memberInfo api", description = "<strong>개인정보 조회를 위해 Bearer 혁식의 토큰이 필요함</strong>")
+    @Operation(summary = "select memberInfo api", description = "<strong>개인정보 조회를 위해 Bearer 형식의 토큰이 필요함</strong>")
     @ApiResponses({
             @ApiResponse(responseCode = "400", description = "등록된 회원정보 없음"),
             @ApiResponse(responseCode = "500", description = "토큰이 유효하지 않음")
@@ -58,13 +58,13 @@ public class MemberController {
     @GetMapping
     public ResponseEntity<?> findMemberInfo(@ApiIgnore @MemberClaim Member member) {
         if (member.equals(Member.DummyMember())) {
-            throw new NoSuchElementException("토큰정보가 유효하지 않습니다");
+            throw new NoSuchElementException("회원정보가 유효하지 않습니다");
         }
 
         return ResponseEntity.ok(new MemberResponse(member));
     }
 
-    @Operation(summary = "ㅕㅔㅇㅁㅅㄷ memberInfo api", description = "<strong>회원정보 수정을 위해 Bearer 혁식의 토큰이 필요함</strong>")
+    @Operation(summary = "update memberInfo api", description = "<strong>회원정보 수정을 위해 Bearer 형식의 토큰이 필요함</strong>")
     @ApiResponses({
             @ApiResponse(responseCode = "400", description = "등록된 회원정보 없음"),
             @ApiResponse(responseCode = "500", description = "토큰이 유효하지 않음")
@@ -72,6 +72,10 @@ public class MemberController {
     @Authenticated
     @PutMapping
     public ResponseEntity<?> updateMember(@ApiIgnore @MemberClaim Member member, @Valid @RequestBody UpdateMemberRequest updateMemberRequest) {
+        if (member.equals(Member.DummyMember())) {
+            throw new NoSuchElementException("회원정보가 유효하지 않습니다");
+        }
+
         memberService.updateMember(member, updateMemberRequest);
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .build();
