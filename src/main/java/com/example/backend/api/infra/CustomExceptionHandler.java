@@ -40,4 +40,11 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(new Error(exception.getMessage(), ErrorCode.ILLEGAL_TOKEN));
     }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<?> handleNullPointerException(NullPointerException exception) {
+        logger.error("message", exception);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new Error(exception.getMessage(), ErrorCode.NO_DATA));
+    }
 }
