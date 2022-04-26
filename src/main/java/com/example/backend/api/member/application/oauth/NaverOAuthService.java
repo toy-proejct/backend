@@ -2,7 +2,7 @@ package com.example.backend.api.member.application.oauth;
 
 import com.example.backend.api.member.domain.MemberRepository;
 import com.example.backend.api.member.dto.LoginRequest;
-import com.example.backend.api.member.dto.ProviderType;
+import com.example.backend.api.member.domain.ProviderType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

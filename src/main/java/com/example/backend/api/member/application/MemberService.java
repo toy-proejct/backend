@@ -4,6 +4,8 @@ import com.example.backend.api.member.application.oauth.OAuthService;
 import com.example.backend.api.member.application.oauth.SocialOAuthFactory;
 import com.example.backend.api.member.domain.Member;
 import com.example.backend.api.member.domain.MemberRepository;
+import com.example.backend.api.member.domain.Oauth;
+import com.example.backend.api.member.domain.OauthRepository;
 import com.example.backend.api.member.dto.LoginRequest;
 import com.example.backend.api.member.dto.RegisterMemberRequest;
 import com.example.backend.api.member.dto.TokenResponse;
@@ -17,19 +19,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final OauthRepository oauthRepository;
     private final PasswordEncoder passwordEncoder;
     private final SocialOAuthFactory socialOAuthFactory;
     private final JwtService jwtService;
 
-    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, SocialOAuthFactory socialOAuthFactory, JwtService jwtService) {
+    public MemberService(MemberRepository memberRepository, OauthRepository oauthRepository, PasswordEncoder passwordEncoder, SocialOAuthFactory socialOAuthFactory, JwtService jwtService) {
         this.memberRepository = memberRepository;
+        this.oauthRepository = oauthRepository;
         this.passwordEncoder = passwordEncoder;
         this.socialOAuthFactory = socialOAuthFactory;
         this.jwtService = jwtService;
     }
 
     public TokenResponse login(LoginRequest loginRequest) {
-        OAuthService OAuthService = socialOAuthFactory.getSocialService(loginRequest.getProvider().getProviderType());
+        OAuthService OAuthService = socialOAuthFactory.getSocialService(loginRequest.getProviderType());
 
         String email = OAuthService.login(loginRequest);
 
@@ -37,8 +41,11 @@ public class MemberService {
     }
 
     public void registerMember(RegisterMemberRequest registerMemberRequest) {
-        Member member = registerMemberRequest.toEntity(passwordEncoder);
+        Member member = registerMemberRequest.toMemberEntity(passwordEncoder);
         memberRepository.save(member);
+
+        Oauth oauth = registerMemberRequest.toOauthEntity(member);
+        oauthRepository.save(oauth);
     }
 
     public void updateMember(Member member, UpdateMemberRequest updateMemberRequest) {

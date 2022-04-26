@@ -1,5 +1,6 @@
 package com.example.backend.api.member.dto;
 
+import com.example.backend.api.member.domain.ProviderType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -18,5 +19,19 @@ public class LoginRequest {
     @ApiModelProperty(value = "비밀번호")
     private String password;
 
-    private Provider provider;
+    private ProviderRequest providerRequest;
+
+    public ProviderType getProviderType() {
+        return providerRequest.getProviderType();
+    }
+
+    @Getter
+    @ApiModel(value = "로그인 방식을 입력하는 객체")
+    private static class ProviderRequest {
+        @ApiModelProperty(value = "로그인 방식")
+        private ProviderType providerType;
+
+        @ApiModelProperty(value = "소셜로그인 선택시 토큰값")
+        private String token;
+    }
 }
