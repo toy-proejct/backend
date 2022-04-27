@@ -1,7 +1,11 @@
 package com.example.backend.api.member;
 
 import com.example.backend.AcceptanceTest;
+import com.example.backend.api.fixtures.AuthFixture;
+import com.example.backend.api.fixtures.MemberFixture;
 import com.example.backend.api.member.domain.ProviderType;
+import com.example.backend.api.member.dto.LoginRequest;
+import com.example.backend.api.member.dto.RegisterMemberRequest;
 import com.example.backend.api.member.dto.TokenResponse;
 import com.example.backend.common.security.BearerHeader;
 import io.restassured.RestAssured;
@@ -15,30 +19,25 @@ import org.springframework.http.MediaType;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.backend.api.fixtures.AuthFixture.*;
+import static com.example.backend.api.fixtures.MemberFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MemberAcceptanceTest extends AcceptanceTest {
-    private static final String EMAIL = "test@test.com";
-    private static final String NICKNAME = "test";
-    private static final String PHONE = "010-0000-0000";
-    private static final String PASSWORD = "1q2w3e4r";
-    private static final String INTRODUCE = "test introduce";
-    private static final String SNS_ID = "";
-    private static final String ACCESS_TOKEN = "";
-    private static final ProviderType DEFAULT = ProviderType.DEFAULT;
-
     private static final String AUTHORIZATION = "authorization";
 
     @Test
     @DisplayName("회원 정보를 관리한다.")
     void manageMember() {
         // when
-        ExtractableResponse<Response> createResponse = 회원_생성을_요청(EMAIL, NICKNAME, PHONE, PASSWORD, INTRODUCE, SNS_ID, ACCESS_TOKEN, DEFAULT);
+        RegisterMemberRequest registerMemberRequest = aMember().build();
+        ExtractableResponse<Response> createResponse = 회원_생성을_요청(registerMemberRequest);
         // then
         회원_생성됨(createResponse);
 
         //when
-        ExtractableResponse<Response> loginResponse = 회원_로그인을_요청(EMAIL, PASSWORD, DEFAULT, ACCESS_TOKEN);
+        LoginRequest loginRequest = loginRequest().build();
+        ExtractableResponse<Response> loginResponse = 회원_로그인을_요청(loginRequest);
         //then
         로그인_성공함(loginResponse);
 
@@ -49,24 +48,10 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
     }
 
-    public static ExtractableResponse<Response> 회원_생성을_요청(String email, String nickname, String phone, String password, String introduce, String snsId, String accessToken, ProviderType providerType) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("memberRequest", Map.of(
-                "email", email,
-                "nickname", nickname,
-                "phone", phone,
-                "password", password,
-                "introduce", introduce
-        ));
-        params.put("oauthRequest", Map.of(
-                "snsId", snsId,
-                "accessToken", accessToken,
-                "providerType", providerType.name()
-        ));
-
+    public static ExtractableResponse<Response> 회원_생성을_요청(RegisterMemberRequest registerMemberRequest) {
         return RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(params)
+                .body(registerMemberRequest)
                 .when()
                 .post("/api/member/register")
                 .then()
@@ -78,18 +63,10 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
     }
 
-    public static ExtractableResponse<Response> 회원_로그인을_요청(String email, String password, ProviderType providerType, String accessToken) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("email", email);
-        params.put("password", password);
-        params.put("providerRequest", Map.of(
-                "providerType", providerType,
-                "token", accessToken
-        ));
-
+    public static ExtractableResponse<Response> 회원_로그인을_요청(LoginRequest loginRequest) {
         return RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(params)
+                .body(loginRequest)
                 .when()
                 .post("/api/member/login")
                 .then()

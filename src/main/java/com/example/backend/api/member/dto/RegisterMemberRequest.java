@@ -5,7 +5,10 @@ import com.example.backend.api.member.domain.Oauth;
 import com.example.backend.api.member.domain.ProviderType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.NotEmpty;
@@ -13,6 +16,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @ApiModel(value = "회원가입 정보를 입력하는 객체")
 public class RegisterMemberRequest {
     private MemberRequest memberRequest;
@@ -28,8 +34,11 @@ public class RegisterMemberRequest {
     }
 
     @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     @ApiModel(value = "회원의 정보를 입력하는 객체")
-    private static class MemberRequest {
+    public static class MemberRequest {
         @NotEmpty(message = "이메일은 필수 입력값입니다.")
         @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,6}$", message = "이메일 형식에 맞지 않습니다.")
         @ApiModelProperty(value = "이메일")
@@ -58,8 +67,11 @@ public class RegisterMemberRequest {
     }
 
     @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     @ApiModel(value = "회원의 로그인 방식을 입력하는 객체")
-    private static class OauthRequest {
+    public static class OauthRequest {
         @NotNull
         @ApiModelProperty(value = "로그인 방식 선택")
         private ProviderType providerType;

@@ -3,12 +3,18 @@ package com.example.backend.api.member.dto;
 import com.example.backend.api.member.domain.ProviderType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @ApiModel(value = "로그인에 필요한 정보를 받는 객체")
 public class LoginRequest {
     @NotEmpty(message = "이메일은 필수 입력값입니다.")
@@ -26,8 +32,11 @@ public class LoginRequest {
     }
 
     @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     @ApiModel(value = "로그인 방식을 입력하는 객체")
-    private static class ProviderRequest {
+    public static class ProviderRequest {
         @ApiModelProperty(value = "로그인 방식")
         private ProviderType providerType;
 
