@@ -47,4 +47,11 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new Error(exception.getMessage(), ErrorCode.NO_DATA));
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleException(Exception exception) {
+        logger.error("meesage", exception);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new Error(exception.getMessage(), ErrorCode.EXCEPTION));
+    }
 }
