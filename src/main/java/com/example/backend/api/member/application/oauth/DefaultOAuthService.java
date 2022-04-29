@@ -2,7 +2,7 @@ package com.example.backend.api.member.application.oauth;
 
 import com.example.backend.api.member.domain.*;
 import com.example.backend.api.member.dto.LoginRequest;
-import com.example.backend.common.exception.UnidentifiedException;
+import com.example.backend.common.exception.LoginFailedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ public class DefaultOAuthService implements OAuthService {
     }
 
     @Override
-    public String login(LoginRequest loginRequest) {
+    public Member login(LoginRequest loginRequest) {
         Member member = memberRepository.getByEmailWithCheck(loginRequest.getEmail());
 
         oauthRepository.findByMemberAndProviderType(member, ProviderType.DEFAULT)
@@ -28,16 +28,16 @@ public class DefaultOAuthService implements OAuthService {
                             .stream()
                             .findFirst()
                             .orElseThrow(() -> {
-                                        throw new UnidentifiedException("유효한 로그인 방식이 없습니다");
+                                        throw new LoginFailedException("유효한 로그인 방식이 없습니다");
                                     }
                             );
 
-                    throw new UnidentifiedException(oauth.getProviderType() + "방식으로 로그인 하세요");
+                    throw new LoginFailedException(oauth.getProviderType() + "방식으로 로그인 하세요");
                 });
 
         member.checkPassword(loginRequest.getPassword(), passwordEncoder);
 
-        return member.getEmail();
+        return member;
     }
 
     @Override

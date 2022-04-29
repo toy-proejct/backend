@@ -1,8 +1,6 @@
 package com.example.backend.api.member.dto;
 
-import com.example.backend.api.member.domain.Member;
-import com.example.backend.api.member.domain.Oauth;
-import com.example.backend.api.member.domain.ProviderType;
+import com.example.backend.api.member.domain.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -62,7 +60,7 @@ public class RegisterMemberRequest {
         private String introduce;
 
         private Member toMemberEntity(PasswordEncoder passwordEncoder) {
-            return new Member(email, nickname, phone, passwordEncoder.encode(password), introduce);
+            return new Member(email, nickname, phone, passwordEncoder.encode(password), introduce, new WithdrawalInfo(), new BanInfo());
         }
     }
 

@@ -2,7 +2,7 @@ package com.example.backend.api.member.domain;
 
 import com.example.backend.api.infra.BaseEntity;
 import com.example.backend.api.member.dto.UpdateMemberRequest;
-import com.example.backend.common.exception.UnidentifiedException;
+import com.example.backend.common.exception.LoginFailedException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -35,6 +35,7 @@ public class Member extends BaseEntity {
     private int credibility;
 
     @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @Embedded
@@ -43,23 +44,33 @@ public class Member extends BaseEntity {
     @Embedded
     private BanInfo banInfo;
 
-    public Member(String email, String nickname, String phone, String password, String introduce) {
+    public Member(String email, String nickname, String phone, String password, String introduce, WithdrawalInfo withdrawalInfo, BanInfo banInfo) {
         this.email = email;
         this.nickname = nickname;
         this.phone = phone;
         this.password = password;
         this.introduce = introduce;
+        this.withdrawalInfo = withdrawalInfo;
+        this.banInfo = banInfo;
     }
 
     public void checkPassword(String password, PasswordEncoder passwordEncoder) {
         if (!passwordEncoder.matches(password, this.password)) {
-            throw new UnidentifiedException("비밀번호가 일치하지 않습니다");
+            throw new LoginFailedException("비밀번호가 일치하지 않습니다");
         }
     }
 
     public void update(UpdateMemberRequest updateMemberRequest) {
         this.nickname = updateMemberRequest.getNickname();
         this.introduce = updateMemberRequest.getIntroduce();
+    }
+
+    public void ban(long days) {
+        banInfo.ban(days);
+    }
+
+    public boolean isBanned() {
+        return banInfo.isBanned();
     }
 
     public static Member DummyMember() {

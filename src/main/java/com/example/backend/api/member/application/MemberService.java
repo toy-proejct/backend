@@ -10,6 +10,7 @@ import com.example.backend.api.member.dto.LoginRequest;
 import com.example.backend.api.member.dto.RegisterMemberRequest;
 import com.example.backend.api.member.dto.TokenResponse;
 import com.example.backend.api.member.dto.UpdateMemberRequest;
+import com.example.backend.common.exception.LoginFailedException;
 import com.example.backend.common.security.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,9 +36,13 @@ public class MemberService {
     public TokenResponse login(LoginRequest loginRequest) {
         OAuthService OAuthService = socialOAuthFactory.getSocialService(loginRequest.getProviderType());
 
-        String email = OAuthService.login(loginRequest);
+        Member member = OAuthService.login(loginRequest);
 
-        return new TokenResponse(jwtService.createToken(email));
+        if (member.isBanned()) {
+            throw new LoginFailedException("정지된 사용자입니다");
+        }
+
+        return new TokenResponse(jwtService.createToken(member.getEmail()));
     }
 
     public void registerMember(RegisterMemberRequest registerMemberRequest) {
