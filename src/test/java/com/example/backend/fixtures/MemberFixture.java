@@ -1,4 +1,4 @@
-package com.example.backend.api.fixtures;
+package com.example.backend.fixtures;
 
 import com.example.backend.api.member.domain.ProviderType;
 import com.example.backend.api.member.dto.RegisterMemberRequest;

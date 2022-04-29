@@ -1,9 +1,6 @@
 package com.example.backend.api.member;
 
 import com.example.backend.AcceptanceTest;
-import com.example.backend.api.fixtures.AuthFixture;
-import com.example.backend.api.fixtures.MemberFixture;
-import com.example.backend.api.member.domain.ProviderType;
 import com.example.backend.api.member.dto.LoginRequest;
 import com.example.backend.api.member.dto.RegisterMemberRequest;
 import com.example.backend.api.member.dto.TokenResponse;
@@ -19,8 +16,8 @@ import org.springframework.http.MediaType;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.example.backend.api.fixtures.AuthFixture.*;
-import static com.example.backend.api.fixtures.MemberFixture.*;
+import static com.example.backend.fixtures.AuthFixture.*;
+import static com.example.backend.fixtures.MemberFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MemberAcceptanceTest extends AcceptanceTest {
