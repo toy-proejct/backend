@@ -1,7 +1,7 @@
 package com.example.backend.api.infra;
 
 import com.example.backend.common.exception.IllegalTokenException;
-import com.example.backend.common.exception.UnidentifiedException;
+import com.example.backend.common.exception.LoginFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
@@ -27,8 +27,8 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(new Error(exception.getMessage(), ErrorCode.ENTITY_NOT_FOUND));
     }
 
-    @ExceptionHandler(UnidentifiedException.class)
-    public ResponseEntity<?> handleUnidentifiedException(UnidentifiedException exception) {
+    @ExceptionHandler(LoginFailedException.class)
+    public ResponseEntity<?> handleLoginFailedException(LoginFailedException exception) {
         logger.error("message", exception);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(new Error(exception.getMessage(), ErrorCode.ARGUMENT_DOES_NOT_MATCH));

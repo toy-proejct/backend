@@ -1,5 +1,6 @@
 package com.example.backend.api.member.application.oauth;
 
+import com.example.backend.api.member.domain.Member;
 import com.example.backend.api.member.domain.MemberRepository;
 import com.example.backend.api.member.dto.LoginRequest;
 import com.example.backend.api.member.domain.ProviderType;
@@ -17,9 +18,9 @@ public class KakaoOAuthService implements OAuthService {
     }
 
     @Override
-    public String login(LoginRequest loginRequest) {
+    public Member login(LoginRequest loginRequest) {
         // TODO : 카카오 로그인 구현
-        return "";
+        return null;
     }
 
     @Override
