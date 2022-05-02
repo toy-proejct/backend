@@ -14,11 +14,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 import javax.validation.Valid;
 import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/member")
+@CrossOrigin(origins = "*")
 public class MemberController {
     private final MemberService memberService;
 
