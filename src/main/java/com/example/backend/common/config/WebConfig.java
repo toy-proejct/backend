@@ -6,6 +6,7 @@ import com.example.backend.common.security.JwtSessionArgumentResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -35,4 +36,13 @@ public class WebConfig implements WebMvcConfigurer {
     public JwtInterceptor jwtInterceptor() {
         return new JwtInterceptor(jwtService);
     }
+
+    @Override
+    public void addCorsMappings(CorsRegistry corsRegistry) {
+        corsRegistry.addMapping("/**")
+                .allowedOriginPatterns("http://localhost:3000", "https://key-value.p-e.kr")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "DELETE")
+                .allowCredentials(true);
+    }
+
 }

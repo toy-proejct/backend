@@ -3,7 +3,6 @@ package com.example.backend.api.member.presentation;
 import com.example.backend.api.member.application.MemberService;
 import com.example.backend.api.member.domain.Member;
 import com.example.backend.api.member.dto.*;
-import com.example.backend.common.exception.IllegalTokenException;
 import com.example.backend.common.security.annotations.Authenticated;
 import com.example.backend.common.security.annotations.MemberClaim;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,14 +13,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-
 import javax.validation.Valid;
 import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/member")
-@CrossOrigin(origins = "*")
 public class MemberController {
     private final MemberService memberService;
 
