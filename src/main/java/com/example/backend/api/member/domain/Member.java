@@ -2,6 +2,7 @@ package com.example.backend.api.member.domain;
 
 import com.example.backend.api.infra.BaseEntity;
 import com.example.backend.api.member.dto.UpdateMemberRequest;
+import com.example.backend.api.member.dto.kakao.KakaoAccount;
 import com.example.backend.common.exception.LoginFailedException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -52,6 +53,20 @@ public class Member extends BaseEntity {
         this.introduce = introduce;
         this.withdrawalInfo = withdrawalInfo;
         this.banInfo = banInfo;
+    }
+
+    public void checkEmail(KakaoAccount kakao_account) {
+        if (!kakao_account.is_email_valid()) {
+            throw new LoginFailedException("유효하지 않은 이메일입니다");
+        }
+
+        if (!kakao_account.is_email_verified()) {
+            throw new LoginFailedException("인증되지 않은 이메일입니다");
+        }
+
+        if (!email.equals(kakao_account.getEmail())) {
+            throw new LoginFailedException("이메일이 일치하지 않습니다");
+        }
     }
 
     public void checkPassword(String password, PasswordEncoder passwordEncoder) {

@@ -1,30 +1,38 @@
 package com.example.backend.api.member.application.oauth;
 
-import com.example.backend.api.member.domain.Member;
-import com.example.backend.api.member.domain.MemberRepository;
+import com.example.backend.api.member.domain.*;
 import com.example.backend.api.member.dto.LoginRequest;
-import com.example.backend.api.member.domain.ProviderType;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.example.backend.api.member.dto.kakao.KakaoMemberInfo;
+import com.example.backend.api.member.infrastructure.KakaoClient;
+import com.example.backend.common.security.BearerHeader;
 import org.springframework.stereotype.Service;
 
 @Service
 public class KakaoOAuthService implements OAuthService {
-    private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
+    private static final ProviderType PROVIDER_TYPE = ProviderType.KAKAO;
 
-    public KakaoOAuthService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
+    private final MemberRepository memberRepository;
+    private final KakaoClient kakaoClient;
+    private final OAuthValidator oAuthValidator;
+
+    public KakaoOAuthService(MemberRepository memberRepository, KakaoClient kakaoClient, OAuthValidator oAuthValidator) {
         this.memberRepository = memberRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.kakaoClient = kakaoClient;
+        this.oAuthValidator = oAuthValidator;
     }
 
     @Override
     public Member login(LoginRequest loginRequest) {
-        // TODO : 카카오 로그인 구현
-        return null;
+        KakaoMemberInfo kakaoClientUserInfo = kakaoClient.getUserInfo(BearerHeader.of(loginRequest.getProviderRequest().getToken()));
+        Member member = memberRepository.getByEmailWithCheck(loginRequest.getEmail());
+        member.checkEmail(kakaoClientUserInfo.getKakao_account());
+        oAuthValidator.validate(member, PROVIDER_TYPE);
+
+        return member;
     }
 
     @Override
     public ProviderType getProviderType() {
-        return ProviderType.KAKAO;
+        return PROVIDER_TYPE;
     }
 }
