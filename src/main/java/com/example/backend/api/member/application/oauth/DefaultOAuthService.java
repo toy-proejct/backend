@@ -1,40 +1,30 @@
 package com.example.backend.api.member.application.oauth;
 
-import com.example.backend.api.member.domain.*;
+import com.example.backend.api.member.domain.Member;
+import com.example.backend.api.member.domain.MemberRepository;
+import com.example.backend.api.member.domain.ProviderType;
 import com.example.backend.api.member.dto.LoginRequest;
-import com.example.backend.common.exception.LoginFailedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DefaultOAuthService implements OAuthService {
-    private final MemberRepository memberRepository;
-    private final OauthRepository oauthRepository;
-    private final PasswordEncoder passwordEncoder;
+    private static final ProviderType PROVIDER_TYPE = ProviderType.DEFAULT;
 
-    public DefaultOAuthService(MemberRepository memberRepository, OauthRepository oauthRepository, PasswordEncoder passwordEncoder) {
+    private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final OAuthValidator oAuthValidator;
+
+    public DefaultOAuthService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, OAuthValidator oAuthValidator) {
         this.memberRepository = memberRepository;
-        this.oauthRepository = oauthRepository;
         this.passwordEncoder = passwordEncoder;
+        this.oAuthValidator = oAuthValidator;
     }
 
     @Override
     public Member login(LoginRequest loginRequest) {
         Member member = memberRepository.getByEmailWithCheck(loginRequest.getEmail());
-
-        oauthRepository.findByMemberAndProviderType(member, ProviderType.DEFAULT)
-                .orElseThrow(() -> {
-                    Oauth oauth = oauthRepository.findByMember(member)
-                            .stream()
-                            .findFirst()
-                            .orElseThrow(() -> {
-                                        throw new LoginFailedException("유효한 로그인 방식이 없습니다");
-                                    }
-                            );
-
-                    throw new LoginFailedException(oauth.getProviderType() + "방식으로 로그인 하세요");
-                });
-
+        oAuthValidator.validate(member, PROVIDER_TYPE);
         member.checkPassword(loginRequest.getPassword(), passwordEncoder);
 
         return member;
@@ -42,6 +32,6 @@ public class DefaultOAuthService implements OAuthService {
 
     @Override
     public ProviderType getProviderType() {
-        return ProviderType.DEFAULT;
+        return PROVIDER_TYPE;
     }
 }
