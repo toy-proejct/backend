@@ -2,29 +2,34 @@ package com.example.backend.api.member.application.oauth;
 
 import com.example.backend.api.member.domain.Member;
 import com.example.backend.api.member.domain.MemberRepository;
-import com.example.backend.api.member.dto.LoginRequest;
 import com.example.backend.api.member.domain.ProviderType;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.example.backend.api.member.dto.LoginRequest;
 import org.springframework.stereotype.Service;
 
 @Service
 public class NaverOAuthService implements OAuthService {
-    private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
+    private static final ProviderType PROVIDER_TYPE = ProviderType.NAVER;
 
-    public NaverOAuthService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
+    private final MemberRepository memberRepository;
+    private final OAuthValidator oAuthValidator;
+
+    public NaverOAuthService(MemberRepository memberRepository, OAuthValidator oAuthValidator) {
         this.memberRepository = memberRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.oAuthValidator = oAuthValidator;
     }
 
     @Override
     public Member login(LoginRequest loginRequest) {
+        Member member = memberRepository.getByEmailWithCheck(loginRequest.getEmail());
+        oAuthValidator.validate(member, PROVIDER_TYPE);
+
         // TODO : 네이버 로그인 구현
-        return null;
+
+        return member;
     }
 
     @Override
     public ProviderType getProviderType() {
-        return ProviderType.NAVER;
+        return PROVIDER_TYPE;
     }
 }
