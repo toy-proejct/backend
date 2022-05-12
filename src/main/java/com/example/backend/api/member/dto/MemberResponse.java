@@ -18,9 +18,15 @@ public class MemberResponse {
 
     private String phone;
 
+    private String introduce;
+
+    private int credibility;
+
     public MemberResponse(Member member) {
         this.email = member.getEmail();
         this.nickname = member.getNickname();
         this.phone = member.getPhone();
+        this.introduce = member.getIntroduce();
+        this.credibility = member.getCredibility();
     }
 }
