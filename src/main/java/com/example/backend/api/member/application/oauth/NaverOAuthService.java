@@ -23,7 +23,7 @@ public class NaverOAuthService implements OAuthService {
         Member member = memberRepository.getByEmailWithCheck(loginRequest.getEmail());
         oAuthValidator.validate(member, PROVIDER_TYPE);
 
-        // TODO : 네이버 로그인 구현
+        // TODO : 네이버 로그인 구현 해야함
 
         return member;
     }
