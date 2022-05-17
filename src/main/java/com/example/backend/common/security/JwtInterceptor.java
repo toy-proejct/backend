@@ -1,5 +1,6 @@
 package com.example.backend.common.security;
 
+import com.example.backend.common.exception.IllegalTokenException;
 import com.example.backend.common.security.annotations.Authenticated;
 import com.example.backend.common.utils.Pair;
 import org.springframework.http.HttpHeaders;
@@ -26,7 +27,12 @@ public class JwtInterceptor implements HandlerInterceptor {
         }
 
         String token = extractBearerToken(request);
-        return jwtService.isValidToken(token);
+
+        if (!jwtService.isValidToken(token)) {
+            throw new IllegalTokenException("토큰이 유효하지 않습니다");
+        }
+
+        return true;
     }
 
     private boolean isAuthenticationPresent(HandlerMethod handler) {
