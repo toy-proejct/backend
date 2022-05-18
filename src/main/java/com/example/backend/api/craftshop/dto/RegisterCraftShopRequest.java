@@ -61,7 +61,7 @@ public class RegisterCraftShopRequest {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    @ApiModel(value = "공방 운영시간을 입력하는 객체")
+    @ApiModel(value = "공방 위치정보를 입력하는 객체")
     public static class LocationRequest {
         @ApiModelProperty(value = "위치정보")
         private String location;
