@@ -4,6 +4,7 @@ import com.example.backend.api.craftshop.domain.BusinessHour;
 import com.example.backend.api.craftshop.domain.CraftShop;
 import com.example.backend.api.craftshop.domain.Location;
 import com.example.backend.api.member.domain.Member;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -46,10 +47,12 @@ public class RegisterCraftShopRequest {
     public static class BusinessHourRequest {
         @NotEmpty(message = "오픈시간은 필수 입력값입니다.")
         @ApiModelProperty(value = "종료시간")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
         private LocalTime businessHourFrom;
 
         @NotEmpty(message = "마감시간은 필수 입력값입니다.")
         @ApiModelProperty(value = "종료시간")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
         private LocalTime businessHourTo;
 
         public BusinessHour toEntity() {
