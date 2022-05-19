@@ -3,6 +3,7 @@ package com.example.backend.api.craftshop.presentation;
 import com.example.backend.api.craftshop.application.CraftShopService;
 import com.example.backend.api.craftshop.dto.RegisterCraftShopRequest;
 import com.example.backend.api.member.domain.Member;
+import com.example.backend.common.security.annotations.Authenticated;
 import com.example.backend.common.security.annotations.MemberClaim;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ public class CraftShopController {
         this.craftShopService = craftShopService;
     }
 
+    @Authenticated
     @PostMapping("register")
     public ResponseEntity<?> registerCraftShop(@ApiIgnore @MemberClaim Member member, @RequestBody RegisterCraftShopRequest registerCraftShopRequest) {
         craftShopService.registerCraftShop(member, registerCraftShopRequest);
