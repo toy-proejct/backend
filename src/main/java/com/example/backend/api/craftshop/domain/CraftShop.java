@@ -24,17 +24,13 @@ public class CraftShop extends BaseEntity {
     private CraftShopStatus status = CraftShopStatus.PENDING;
 
     @Embedded
-    private BusinessHour businessHour;
-
-    @Embedded
     private Location location;
 
-    public CraftShop(String name, String phone, String introduce, Long operatorId, BusinessHour businessHour, Location location) {
+    public CraftShop(String name, String phone, String introduce, Long operatorId, Location location) {
         this.name = name;
         this.phone = phone;
         this.introduce = introduce;
         this.operatorId = operatorId;
-        this.businessHour = businessHour;
         this.location = location;
     }
 
