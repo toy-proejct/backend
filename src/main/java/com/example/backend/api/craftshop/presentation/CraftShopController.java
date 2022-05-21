@@ -22,7 +22,7 @@ public class CraftShopController {
     }
 
     @Authenticated
-    @PostMapping("register")
+    @PostMapping("/register")
     public ResponseEntity<?> registerCraftShop(@ApiIgnore @MemberClaim Member member, @RequestBody RegisterCraftShopRequest registerCraftShopRequest) {
         craftShopService.registerCraftShop(member, registerCraftShopRequest);
         return ResponseEntity.ok()
