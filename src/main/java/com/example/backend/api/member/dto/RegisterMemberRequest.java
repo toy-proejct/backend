@@ -27,6 +27,10 @@ public class RegisterMemberRequest {
         return memberRequest.toMemberEntity(passwordEncoder);
     }
 
+    public Member toMemberEntity(String email, PasswordEncoder passwordEncoder) {
+        return memberRequest.toMemberEntity(email, passwordEncoder);
+    }
+
     public Oauth toOauthEntity(Member member) {
         return oauthRequest.toOauthEntity(member);
     }
@@ -60,6 +64,10 @@ public class RegisterMemberRequest {
         private String introduce;
 
         private Member toMemberEntity(PasswordEncoder passwordEncoder) {
+            return new Member(email, nickname, phone, passwordEncoder.encode(password), introduce, new WithdrawalInfo(), new BanInfo());
+        }
+
+        public Member toMemberEntity(String email, PasswordEncoder passwordEncoder) {
             return new Member(email, nickname, phone, passwordEncoder.encode(password), introduce, new WithdrawalInfo(), new BanInfo());
         }
     }

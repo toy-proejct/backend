@@ -4,6 +4,7 @@ import com.example.backend.api.member.domain.Member;
 import com.example.backend.api.member.domain.MemberRepository;
 import com.example.backend.api.member.domain.ProviderType;
 import com.example.backend.api.member.dto.LoginRequest;
+import com.example.backend.api.member.dto.RegisterMemberRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,6 +27,11 @@ public class NaverOAuthService implements OAuthService {
         // TODO : 네이버 로그인 구현 해야함
 
         return member;
+    }
+
+    @Override
+    public void register(RegisterMemberRequest registerMemberRequest) {
+        // TODO : 네이버 회원가입 구현 해야함
     }
 
     @Override
