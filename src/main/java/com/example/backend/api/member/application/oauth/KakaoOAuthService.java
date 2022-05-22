@@ -29,26 +29,29 @@ public class KakaoOAuthService implements OAuthService {
 
     @Override
     public Member login(LoginRequest loginRequest) {
-        Member member = memberRepository.getByEmailWithCheck(loginRequest.getEmail());
-        oAuthValidator.validate(member, PROVIDER_TYPE);
+        String email = getEmail(loginRequest.getProviderRequest().getToken());
 
-        KakaoMemberInfo kakaoClientUserInfo = kakaoClient.getUserInfo(BearerHeader.of(loginRequest.getProviderRequest().getToken()));
-        member.checkEmail(kakaoClientUserInfo.getKakao_account());
+        Member member = memberRepository.getByEmailWithCheck(email);
+        oAuthValidator.validate(member, PROVIDER_TYPE);
 
         return member;
     }
 
     @Override
     public void register(RegisterMemberRequest registerMemberRequest) {
-        KakaoMemberInfo kakaoClientUserInfo = kakaoClient.getUserInfo(BearerHeader.of(registerMemberRequest.getOauthRequest().getAccessToken()));
-        String email = kakaoClientUserInfo.getKakao_account()
-                .getEmail();
+        String email = getEmail(registerMemberRequest.getOauthRequest().getAccessToken());
 
         Member member = registerMemberRequest.toMemberEntity(email, passwordEncoder);
         memberRepository.save(member);
 
         Oauth oauth = registerMemberRequest.toOauthEntity(member);
         oauthRepository.save(oauth);
+    }
+
+    private String getEmail(String loginRequest) {
+        KakaoMemberInfo kakaoClientUserInfo = kakaoClient.getUserInfo(BearerHeader.of(loginRequest));
+        return kakaoClientUserInfo.getKakao_account()
+                .getEmail();
     }
 
     @Override
