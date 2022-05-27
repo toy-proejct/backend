@@ -3,14 +3,13 @@ package com.example.backend.api.member.application.oauth;
 import com.example.backend.api.member.domain.*;
 import com.example.backend.api.member.dto.LoginRequest;
 import com.example.backend.api.member.dto.RegisterMemberRequest;
-import com.example.backend.api.member.dto.kakao.KakaoMemberInfo;
 import com.example.backend.api.member.infrastructure.KakaoClient;
 import com.example.backend.common.security.BearerHeader;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class KakaoOAuthService implements OAuthService {
+public class GithubOAuthService implements OAuthService {
     private static final ProviderType PROVIDER_TYPE = ProviderType.KAKAO;
 
     private final MemberRepository memberRepository;
@@ -19,7 +18,7 @@ public class KakaoOAuthService implements OAuthService {
     private final PasswordEncoder passwordEncoder;
     private final OAuthValidator oAuthValidator;
 
-    public KakaoOAuthService(MemberRepository memberRepository, OauthRepository oauthRepository, KakaoClient kakaoClient, PasswordEncoder passwordEncoder, OAuthValidator oAuthValidator) {
+    public GithubOAuthService(MemberRepository memberRepository, OauthRepository oauthRepository, KakaoClient kakaoClient, PasswordEncoder passwordEncoder, OAuthValidator oAuthValidator) {
         this.memberRepository = memberRepository;
         this.oauthRepository = oauthRepository;
         this.kakaoClient = kakaoClient;
