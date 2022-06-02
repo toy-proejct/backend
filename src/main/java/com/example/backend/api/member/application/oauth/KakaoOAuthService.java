@@ -49,7 +49,8 @@ public class KakaoOAuthService implements OAuthService {
     }
 
     private String getEmail(String token) {
-        return kakaoClient.getUserInfo(BearerHeader.of(token)).getKakao_account()
+        return kakaoClient.getUserInfo(BearerHeader.of(token))
+                .getKakao_account()
                 .getEmail();
     }
 
