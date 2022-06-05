@@ -28,7 +28,7 @@ public class NaverOAuthService implements OAuthService {
 
     @Override
     public Member login(LoginRequest loginRequest) {
-        String email = getEmail(loginRequest.getProviderRequest().getToken());
+        String email = getEmailFromToken(loginRequest.getProviderRequest().getToken());
 
         Member member = memberRepository.getByEmailWithCheck(email);
         oAuthValidator.validate(member, PROVIDER_TYPE);
@@ -38,7 +38,7 @@ public class NaverOAuthService implements OAuthService {
 
     @Override
     public void register(RegisterMemberRequest registerMemberRequest) {
-        String email = getEmail(registerMemberRequest.getOauthRequest().getAccessToken());
+        String email = getEmailFromToken(registerMemberRequest.getOauthRequest().getAccessToken());
 
         Member member = registerMemberRequest.toMemberEntity(email, passwordEncoder);
         memberRepository.save(member);
@@ -47,7 +47,7 @@ public class NaverOAuthService implements OAuthService {
         oauthRepository.save(oauth);
     }
 
-    private String getEmail(String token) {
+    private String getEmailFromToken(String token) {
         return naverClient.getUserInfo(BearerHeader.of(token))
                 .getResponse()
                 .getEmail();

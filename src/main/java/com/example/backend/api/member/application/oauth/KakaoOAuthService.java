@@ -3,7 +3,6 @@ package com.example.backend.api.member.application.oauth;
 import com.example.backend.api.member.domain.*;
 import com.example.backend.api.member.dto.LoginRequest;
 import com.example.backend.api.member.dto.RegisterMemberRequest;
-import com.example.backend.api.member.dto.kakao.KakaoMemberInfo;
 import com.example.backend.api.member.infrastructure.KakaoClient;
 import com.example.backend.common.security.BearerHeader;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,7 +28,7 @@ public class KakaoOAuthService implements OAuthService {
 
     @Override
     public Member login(LoginRequest loginRequest) {
-        String email = getEmail(loginRequest.getProviderRequest().getToken());
+        String email = getEmailFromToken(loginRequest.getProviderRequest().getToken());
 
         Member member = memberRepository.getByEmailWithCheck(email);
         oAuthValidator.validate(member, PROVIDER_TYPE);
@@ -39,7 +38,7 @@ public class KakaoOAuthService implements OAuthService {
 
     @Override
     public void register(RegisterMemberRequest registerMemberRequest) {
-        String email = getEmail(registerMemberRequest.getOauthRequest().getAccessToken());
+        String email = getEmailFromToken(registerMemberRequest.getOauthRequest().getAccessToken());
 
         Member member = registerMemberRequest.toMemberEntity(email, passwordEncoder);
         memberRepository.save(member);
@@ -48,7 +47,7 @@ public class KakaoOAuthService implements OAuthService {
         oauthRepository.save(oauth);
     }
 
-    private String getEmail(String token) {
+    private String getEmailFromToken(String token) {
         return kakaoClient.getUserInfo(BearerHeader.of(token))
                 .getKakao_account()
                 .getEmail();

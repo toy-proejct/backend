@@ -5,7 +5,7 @@ import com.example.backend.common.utils.Pair;
 
 public class BearerHeader {
     private static final String DELIMITER = " ";
-    private static final String BEARER = "bearer ";
+    private static final String BEARER = "Bearer ";
 
     public static Pair<String, String> splitToTokenFormat(String authorization) {
         if (authorization == null || authorization.isEmpty()) {
