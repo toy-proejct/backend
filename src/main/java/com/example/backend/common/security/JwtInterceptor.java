@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class JwtInterceptor implements HandlerInterceptor {
 
-    private static final String BEARER = "bearer";
+    private static final String BEARER = "Bearer";
 
     private final JwtService jwtService;
 

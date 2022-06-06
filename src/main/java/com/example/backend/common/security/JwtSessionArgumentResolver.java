@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Component
 public class JwtSessionArgumentResolver implements HandlerMethodArgumentResolver {
-    private static final String BEARER = "bearer";
+    private static final String BEARER = "Bearer";
 
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
