@@ -48,7 +48,6 @@ public class NaverOAuthService implements OAuthService {
     }
 
     private String getEmailFromToken(String token) {
-        System.out.println(token);
         return naverClient.getUserInfo(BearerHeader.of(token))
                 .getResponse()
                 .getEmail();
