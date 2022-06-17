@@ -9,14 +9,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByEmail(String email);
 
     default Member getByIdWithCheck(Long id) {
-        return findById(id).orElseThrow(() -> {
-            throw new NoSuchElementException("등록된 계정이 없습니다");
-        });
+        return findById(id).orElseThrow(() -> new NoSuchElementException("등록된 계정이 없습니다"));
     }
 
     default Member getByEmailWithCheck(String email) {
-        return findByEmail(email).orElseThrow(() -> {
-            throw new NoSuchElementException("등록된 계정이 없습니다");
-        });
+        return findByEmail(email).orElseThrow(() -> new NoSuchElementException("등록된 계정이 없습니다"));
     }
 }

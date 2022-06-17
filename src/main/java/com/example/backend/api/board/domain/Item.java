@@ -34,4 +34,28 @@ public class Item extends BaseEntity {
         this.quantity = quantity;
         this.purchaseTime = purchaseTime;
     }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public BigDecimal getCost() {
+        return cost;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public LocalDateTime getPurchaseTime() {
+        return purchaseTime;
+    }
 }

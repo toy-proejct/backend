@@ -4,6 +4,7 @@ import com.example.backend.api.infra.BaseEntity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +19,7 @@ public class Board extends BaseEntity {
     @ManyToOne
     private Category category;
 
-    private Long userId;
+    private Long writerId;
 
     private String title;
 
@@ -29,16 +30,24 @@ public class Board extends BaseEntity {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
+    @LastModifiedDate
     private LocalDateTime modifiedAt;
 
-    private Long viewCount;
+    private Long viewCount = 0L;
+
+    public Board(Category category, Long writerId, String title, String content) {
+        this.category = category;
+        this.writerId = writerId;
+        this.title = title;
+        this.content = content;
+    }
 
     public Category getCategory() {
         return category;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getWriterId() {
+        return writerId;
     }
 
     public String getTitle() {

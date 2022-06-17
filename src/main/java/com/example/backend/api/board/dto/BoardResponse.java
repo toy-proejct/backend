@@ -2,6 +2,7 @@ package com.example.backend.api.board.dto;
 
 import com.example.backend.api.board.domain.Board;
 import com.example.backend.api.board.domain.BoardTag;
+import com.example.backend.api.board.domain.Item;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,10 +35,12 @@ public class BoardResponse {
 
     private List<BoardTagResponse> boardTags = new ArrayList<>();
 
-    public BoardResponse(Board board, List<BoardTag> boardTags) {
+    private List<ItemResponse> items = new ArrayList<>();
+
+    public BoardResponse(Board board, List<BoardTag> boardTags, List<Item> items) {
         categoryId = board.getCategory().getId();
         categoryName = board.getCategory().getName();
-        userId = board.getUserId();
+        userId = board.getWriterId();
         title = board.getTitle();
         content = board.getContent();
         createdAt = board.getCreatedAt();
@@ -45,6 +48,9 @@ public class BoardResponse {
         viewCount = board.getViewCount();
         this.boardTags = boardTags.stream()
                 .map(BoardTagResponse::new)
+                .collect(Collectors.toList());
+        this.items = items.stream()
+                .map(ItemResponse::new)
                 .collect(Collectors.toList());
     }
 }
