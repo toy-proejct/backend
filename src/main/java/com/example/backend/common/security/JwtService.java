@@ -40,7 +40,7 @@ public class JwtService {
 
     public String getClaimEmail(String token) {
         if (!isValidToken(token)) {
-            return "";
+            return "test@test.com";
         }
 
         return getClaimsJws(token).getBody()

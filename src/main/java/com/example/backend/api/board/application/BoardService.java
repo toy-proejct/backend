@@ -78,6 +78,10 @@ public class BoardService {
 
         boardTagRepository.saveAll(boardTags);
 
+        List<Item> items = registerBoardRequest.toItemEntity(board);
+
+        itemRepository.saveAll(items);
+
         return board.getId();
     }
 }

@@ -35,9 +35,10 @@ public class BoardController {
         return ResponseEntity.ok(boardService.findCategories());
     }
 
-    @Authenticated
-    @PostMapping
+//    @Authenticated
+    @PostMapping("/register")
     public ResponseEntity<?> registerBoard(@ApiIgnore @MemberClaim Member member, @RequestBody RegisterBoardRequest registerBoardRequest) {
+        System.out.println("iubuvucgucguvyc");
         return ResponseEntity.ok(boardService.registerBoard(member, registerBoardRequest));
     }
 }
