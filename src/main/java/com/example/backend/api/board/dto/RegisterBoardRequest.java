@@ -5,7 +5,6 @@ import com.example.backend.api.board.domain.BoardTag;
 import com.example.backend.api.board.domain.Category;
 import com.example.backend.api.board.domain.Item;
 import com.example.backend.api.member.domain.Member;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
